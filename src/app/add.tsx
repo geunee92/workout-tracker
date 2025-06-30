@@ -8,12 +8,15 @@ import {
   Text,
   TextInput,
 } from "react-native";
+import { useRoutines } from "../context/RoutineContext";
 
 export const options = {
   title: "루틴 추가",
 };
 
 export default function AddRoutineScreen() {
+  const { addRoutine } = useRoutines();
+
   const router = useRouter();
 
   const [name, setName] = useState("");
@@ -36,7 +39,7 @@ export default function AddRoutineScreen() {
       createdAt: new Date().toISOString(),
     };
 
-    console.log("✅ 등록된 루틴:", newRoutine);
+    addRoutine(newRoutine);
     Alert.alert("운동 루틴이 등록되었습니다.");
 
     setName("");
