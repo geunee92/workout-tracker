@@ -1,9 +1,14 @@
+import { Colors } from "@/src/constants/Colors";
 import { useRoutines } from "@/src/context/RoutineContext";
+import { useColorScheme } from "@/src/hooks/useColorScheme.web";
 import Constants from "expo-constants";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 
 export default function SettingsScreen() {
   const { clearRoutines } = useRoutines();
+
+  const colorScheme = useColorScheme() ?? "light";
+  const styles = getStyles(colorScheme);
 
   const handleReset = () => {
     Alert.alert(
@@ -40,30 +45,40 @@ export default function SettingsScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>ℹ️ 앱 정보</Text>
 
-        <Text>버전: {Constants.expoConfig?.version ?? "1.0.0"}</Text>
+        <Text style={styles.sectionText}>
+          버전: {Constants.expoConfig?.version ?? "1.0.0"}
+        </Text>
 
-        <Text>제작자: geunee92</Text>
+        <Text style={styles.sectionText}>제작자: geunee92</Text>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    gap: 32,
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  section: {
-    gap: 12,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-  },
-});
+function getStyles(theme: "light" | "dark") {
+  return StyleSheet.create({
+    container: {
+      padding: 20,
+      gap: 32,
+      flex: 1,
+      backgroundColor: Colors[theme].background,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: Colors[theme].text,
+    },
+    section: {
+      gap: 12,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: "600",
+      color: Colors[theme].text,
+    },
+    sectionText: {
+      fontSize: 14,
+      color: Colors[theme].text,
+    },
+  });
+}

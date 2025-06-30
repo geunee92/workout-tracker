@@ -1,10 +1,16 @@
+import { Colors } from "@/src/constants/Colors";
 import { useRoutines } from "@/src/context/RoutineContext";
+import { useColorScheme } from "@/src/hooks/useColorScheme.web";
 import { useRouter } from "expo-router";
 import { Alert, Button, FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function HomeScreen() {
   const { routines, removeRoutine } = useRoutines();
+
   const router = useRouter();
+
+  const colorScheme = useColorScheme() ?? "light";
+  const styles = getStyles(colorScheme);
 
   const handleDelete = (id: string) => {
     Alert.alert("루틴 삭제", "정말 삭제하시겠어요?", [
@@ -55,42 +61,47 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    gap: 20,
-    flex: 1,
-  },
-  heading: {
-    fontSize: 22,
-    fontWeight: "bold",
-  },
-  emptyText: {
-    fontSize: 16,
-    color: "#888",
-  },
-  list: {
-    gap: 12,
-  },
-  card: {
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    backgroundColor: "#fff",
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  detail: {
-    marginTop: 4,
-    fontSize: 14,
-    color: "#555",
-  },
-  memo: {
-    marginTop: 8,
-    fontStyle: "italic",
-    color: "#666",
-  },
-});
+function getStyles(theme: "light" | "dark") {
+  return StyleSheet.create({
+    container: {
+      padding: 20,
+      gap: 20,
+      flex: 1,
+      backgroundColor: Colors[theme].background,
+    },
+    heading: {
+      fontSize: 22,
+      fontWeight: "bold",
+      color: Colors[theme].text,
+    },
+    emptyText: {
+      fontSize: 16,
+      color: Colors[theme].icon,
+    },
+    list: {
+      gap: 12,
+    },
+    card: {
+      padding: 16,
+      borderWidth: 1,
+      borderColor: Colors[theme].tabIconDefault,
+      borderRadius: 8,
+      backgroundColor: Colors[theme].background,
+    },
+    name: {
+      fontSize: 18,
+      fontWeight: "600",
+      color: Colors[theme].text,
+    },
+    detail: {
+      marginTop: 4,
+      fontSize: 14,
+      color: Colors[theme].icon,
+    },
+    memo: {
+      marginTop: 8,
+      fontStyle: "italic",
+      color: Colors[theme].icon,
+    },
+  });
+}
