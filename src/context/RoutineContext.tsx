@@ -14,6 +14,7 @@ type RoutineContextType = {
   routines: Routine[];
   addRoutine: (routine: Routine) => void;
   clearRoutines: () => void;
+  removeRoutine: (id: string) => void;
 };
 
 const RoutineContext = createContext<RoutineContextType | null>(null);
@@ -49,8 +50,16 @@ export function RoutineProvider({ children }: { children: React.ReactNode }) {
     await AsyncStorage.removeItem("routines");
   };
 
+  const removeRoutine = async (id: string) => {
+    const updated = routines.filter((r) => r.id !== id);
+    setRoutines(updated);
+    await AsyncStorage.setItem("routines", JSON.stringify(updated));
+  };
+
   return (
-    <RoutineContext.Provider value={{ routines, addRoutine, clearRoutines }}>
+    <RoutineContext.Provider
+      value={{ routines, addRoutine, clearRoutines, removeRoutine }}
+    >
       {children}
     </RoutineContext.Provider>
   );

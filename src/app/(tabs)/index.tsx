@@ -1,10 +1,21 @@
 import { useRoutines } from "@/src/context/RoutineContext";
 import { useRouter } from "expo-router";
-import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import { Alert, Button, FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function HomeScreen() {
-  const { routines } = useRoutines();
+  const { routines, removeRoutine } = useRoutines();
   const router = useRouter();
+
+  const handleDelete = (id: string) => {
+    Alert.alert("루틴 삭제", "정말 삭제하시겠어요?", [
+      { text: "취소", style: "cancel" },
+      {
+        text: "삭제",
+        style: "destructive",
+        onPress: () => removeRoutine(id),
+      },
+    ]);
+  };
 
   return (
     <View style={styles.container}>
@@ -28,6 +39,12 @@ export default function HomeScreen() {
               {item.memo ? (
                 <Text style={styles.memo}>💬 {item.memo}</Text>
               ) : null}
+
+              <Button
+                title="삭제"
+                color="#d9534f"
+                onPress={() => handleDelete(item.id)}
+              />
             </View>
           )}
         />
